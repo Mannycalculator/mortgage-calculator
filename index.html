@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced Mortgage Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; max-width: 600px; }
+    h1 { color: #333; }
+    label { margin-top: 15px; display: block; font-weight: bold; }
+    input { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
+    #result { margin-top: 30px; padding: 20px; border: 1px solid #ccc; background: #f9f9f9; }
+    .line { margin: 5px 0; }
+  </style>
+</head>
+<body>
+
+  <h1>Advanced Mortgage Calculator</h1>
+
+  <label>Home Price:
+    <input type="number" id="homePrice" />
+  </label>
+
+  <label>Down Payment:
+    <input type="number" id="downPayment" />
+  </label>
+
+  <label>Loan Term (Years):
+    <input type="number" id="loanTerm" />
+  </label>
+
+  <label>Interest Rate (%):
+    <input type="number" step="0.01" id="interestRate" />
+  </label>
+
+  <label>Annual Property Taxes ($):
+    <input type="number" id="propertyTaxes" />
+  </label>
+
+  <label>Annual Homeowner's Insurance ($):
+    <input type="number" id="homeInsurance" />
+  </label>
+
+  <button onclick="calculateAdvancedMortgage()">Calculate</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateAdvancedMortgage() {
+      const homePrice = parseFloat(document.getElementById('homePrice').value);
+      const downPayment = parseFloat(document.getElementById('downPayment').value);
+      const loanTermYears = parseFloat(document.getElementById('loanTerm').value);
+      const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+      const annualTaxes = parseFloat(document.getElementById('propertyTaxes').value);
+      const annualInsurance = parseFloat(document.getElementById('homeInsurance').value);
+
+      const loanAmount = homePrice - downPayment;
+      const numberOfPayments = loanTermYears * 12;
+
+      const monthlyPrincipalInterest = (loanAmount * interestRate) / 
+        (1 - Math.pow(1 + interestRate, -numberOfPayments));
+
+      const monthlyTaxes = annualTaxes / 12;
+      const monthlyInsurance = annualInsurance / 12;
+
+      const downPaymentPercent = (downPayment / homePrice) * 100;
+      const monthlyPMI = downPaymentPercent < 20 ? (loanAmount * 0.005) / 12 : 0;
+
+      const totalMonthlyPayment = 
+        monthlyPrincipalInterest + monthlyTaxes + monthlyInsurance + monthlyPMI;
+
+      document.getElementById('result').innerHTML = `
+        <div class="line"><strong>Loan Amount:</strong> $${loanAmount.toFixed(2)}</div>
+        <div class="line"><strong>Monthly Principal & Interest:</strong> $${monthlyPrincipalInterest.toFixed(2)}</div>
+        <div class="line"><strong>Monthly Property Taxes:</strong> $${monthlyTaxes.toFixed(2)}</div>
+        <div class="line"><strong>Monthly Insurance:</strong> $${monthlyInsurance.toFixed(2)}</div>
+        ${monthlyPMI > 0 ? `<div class="line"><strong>Monthly PMI:</strong> $${monthlyPMI.toFixed(2)}</div>` : ''}
+        <hr>
+        <div class="line"><strong>Total Monthly Payment:</strong> $${totalMonthlyPayment.toFixed(2)}</div>
+      `;
+    }
+  </script>
+
+</body>
+</html>
