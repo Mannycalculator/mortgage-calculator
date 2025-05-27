@@ -65,7 +65,7 @@
       const monthlyInsurance = annualInsurance / 12;
 
       const downPaymentPercent = (downPayment / homePrice) * 100;
-      const monthlyPMI = downPaymentPercent < 20 ? (loanAmount * 0.005) / 12 : 0;
+      const monthlyPMI = downPaymentPercent < 20 ? (loanAmount * 0.0055) / 12 : 0;
 
       const totalMonthlyPayment = 
         monthlyPrincipalInterest + monthlyTaxes + monthlyInsurance + monthlyPMI;
